@@ -112,48 +112,45 @@ const data = [
   Step 5: Add a new article to the array. Make sure it is in the same format as the others. Refresh the page to see the new artible
 
 */
-const article = document.querySelector('.articles')
-data.forEach(item => {
- article.appendChild(pCreator(item.title,item.date, item.firstParagraph, item.secondParagraph, item.thirdParagraph)) 
-});
+const article = document.querySelector(".articles");
 
-function pCreator(title, date, firstParagraph, secondParagraph, thirdParagraph) {
+const pCreator = attr => {
   const divE = document.createElement("div");
   divE.classList.add("article");
 
-  const h2 = document.createElement("h2");
-  h2.textContent = title;
-  
-  const p = document.createElement("p");
-  p.classList.add('date');
-  p.textContent = date;
+  const h2 = document.createElement("h2")
+  h2.textContent = attr.title;
 
-  const p1 = document.createElement('p');
-  p1.textContent = firstParagraph;
+  const date = document.createElement("p");
+  date.classList.add("date");
+  date.textContent = attr.date;
 
-  const p2 = document.createElement('p');
-  p2.textContent = secondParagraph;
+  const paragraphs = [];
+  for (let i = 0; i < 3; i++) {
+    paragraphs.push(document.createElement("p"));
+  }
 
-  const p3 = document.createElement('p');
-  p3.textContent = thirdParagraph;
-
-
+  paragraphs[0].textContent = attr.firstParagraph;
+  paragraphs[1].textContent = attr.secondParagraph;
+  paragraphs[2].textContent = attr.thirdParagraph;
 
 
-  
-
-
-  let span = document.createElement("span");
+  const span = document.createElement("span");
   span.classList.add("expandButton");
-  
+  span.textContent = "\u25bc";
+  span.addEventListener('click', e => {
+    e.preventDefault();
+    divE.classList.toggle('article-open')
+  })
 
- divE.appendChild(h2);
- divE.appendChild(p);
- 
+  article.appendChild(divE);
+  divE.appendChild(h2);
+  divE.appendChild(date);
+  paragraphs.forEach(p => divE.appendChild(p));
+  divE.appendChild(span);
 
+  return divE;
+};
 
-return divE;
-}
-
-
+data.forEach(content => article.append(pCreator(content)));
 
